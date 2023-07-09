@@ -15,11 +15,10 @@ interface LikeButtonProps {
 const LikeButton: React.FC<LikeButtonProps> = ({ songId }) => {
   const router = useRouter();
   const { supabaseClient } = useSessionContext();
-
   const authModal = useAuthModal();
   const { user } = useUser();
 
-  const [isLiked, setIsLiked] = useState(false);
+  const [isLiked, setIsLiked] = useState<boolean>(false);
 
   useEffect(() => {
     if (!user?.id) {
@@ -37,9 +36,9 @@ const LikeButton: React.FC<LikeButtonProps> = ({ songId }) => {
       if (!error && data) {
         setIsLiked(true);
       }
-
-      fetchData();
     };
+
+    fetchData();
   }, [songId, supabaseClient, user?.id]);
 
   const Icon = isLiked ? AiFillHeart : AiOutlineHeart;
@@ -61,39 +60,36 @@ const LikeButton: React.FC<LikeButtonProps> = ({ songId }) => {
         toast.error(error.message);
       } else {
         setIsLiked(false);
-        toast.success('Unliked!')
+        toast.success("Unliked!");
       }
     } else {
-      const { error } = await supabaseClient
-        .from("liked_songs")
-        .insert({
-          song_id: songId,
-          user_id: user.id,
-        });
-        
-        if(error) {
-          toast.error(error.message)
-        }
-        else {
-          setIsLiked(true)
-          toast.success('Liked!')
-        }
+      const { error } = await supabaseClient.from("liked_songs").insert({
+        song_id: songId,
+        user_id: user.id,
+      });
+
+      if (error) {
+        toast.error(error.message);
+      } else {
+        setIsLiked(true);
+        toast.success("Liked!");
+      }
     }
 
     router.refresh();
   };
 
   return (
-    <div>
-      <button
-        onClick={handleLike}
-        className="
-        hover:opacity-75 transition 
-      "
-      >
-        <Icon color={isLiked ? "#22c55e" : "white"} size={25} />
-      </button>
-    </div>
+    <button
+      className="
+      cursor-pointer 
+      hover:opacity-75 
+      transition
+    "
+      onClick={handleLike}
+    >
+      <Icon color={isLiked ? "#22c55e" : "white"} size={25} />
+    </button>
   );
 };
 
