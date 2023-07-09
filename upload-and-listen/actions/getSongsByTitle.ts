@@ -5,22 +5,22 @@ import getSongs from "./getSongs";
 
 const getSongsByTitle = async (title: string): Promise<Song[]> => {
   const supabase = createServerComponentClient({
-    cookies: cookies,
+    cookies: cookies
   });
 
   if (!title) {
     const allSongs = await getSongs();
-    return allSongs
+    return allSongs;
   }
 
   const { data, error } = await supabase
-    .from("songs")
-    .select("*")
-    .ilike('title', `%${title}%`) // This gives us a precise search algorithm
-    .order("created_at", { ascending: false });
+    .from('songs')
+    .select('*')
+    .ilike('title', `%${title}%`)
+    .order('created_at', { ascending: false })
 
   if (error) {
-    console.log(error);
+    console.log(error.message);
   }
 
   return (data as any) || [];

@@ -11,7 +11,7 @@ import getSongsByUserId from "@/actions/getSongsByUserId";
 const font = Figtree({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "Music Playback Clone",
+  title: "Upload and Listen",
   description: "Listen to Music",
 };
 

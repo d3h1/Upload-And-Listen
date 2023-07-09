@@ -1,7 +1,10 @@
 "use client";
 
+import MediaItem from "@/components/MediaItem";
+import { useUser } from "@/hooks/useUser";
 import { Song } from "@/types";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 interface LikedContentProps {
   songs: Song[];
@@ -9,9 +12,41 @@ interface LikedContentProps {
 
 const LikedContent: React.FC<LikedContentProps> = ({ songs }) => {
   const router = useRouter();
+  const { isLoading, user } = useUser();
+
+  useEffect(() => {
+    // Makes sure only authenticated users can reach this page, redicrection to home page 
+    if(!isLoading && !user) {
+      router.replace('/');
+    }    
+  }, [isLoading, user, router])
+
+  if (songs.length === 0) {
+    return (
+      <div className="
+        flex flex-col gap-y-2 w-full px-6 text-neutral-600
+      ">
+        No Liked Songs
+      </div>
+    )
+  }
 
   
-  return <div>Liked Content</div>;
+  return <div className="flex flex-col gap-y-2 w-full p-6">
+    {songs.map((song) => (
+      <div
+        key={song.id}
+        className="flex items-center gap-x-4 w-full"
+      >
+        <div className="flex-1">
+          <MediaItem 
+            onClick={() => {}}
+            data={song}
+          />
+        </div>
+      </div>
+    ))}
+  </div>;
 };
 
 export default LikedContent;
