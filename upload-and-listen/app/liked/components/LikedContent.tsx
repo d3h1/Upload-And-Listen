@@ -2,6 +2,7 @@
 
 import LikeButton from "@/components/LikeButton";
 import MediaItem from "@/components/MediaItem";
+import useOnPlay from "@/hooks/useOnPlay";
 import { useUser } from "@/hooks/useUser";
 import { Song } from "@/types";
 import { useRouter } from "next/navigation";
@@ -14,6 +15,7 @@ interface LikedContentProps {
 const LikedContent: React.FC<LikedContentProps> = ({ songs }) => {
   const router = useRouter();
   const { isLoading, user } = useUser();
+  const onPlay = useOnPlay(songs);
 
   useEffect(() => {
     // Makes sure only authenticated users can reach this page, redicrection to home page 
@@ -41,7 +43,7 @@ const LikedContent: React.FC<LikedContentProps> = ({ songs }) => {
       >
         <div className="flex-1">
           <MediaItem 
-            onClick={() => {}}
+            onClick={(id: string) => onPlay(id)}
             data={song}
           />
         </div>
