@@ -24,7 +24,7 @@ const Player = () => {
                 w-full py-2 h-[80px] px-4
             "
     >
-      <PlayerContent 
+      <PlayerContent
         key={songUrl} //! we are using this key here because it will allow users to skip the song (destroying the previous element before it)
         song={song}
         songUrl={songUrl}
